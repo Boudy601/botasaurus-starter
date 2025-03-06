@@ -1,8 +1,8 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
 export default function Seo({
   title = 'Omkar Cloud',
-  description = 'Elementasaurus is The Best Free Website Builder for Web Designers',
+  description = 'Get the Data You Want - Effortlessly',
 }) {
   return (
     <Head>
@@ -15,5 +15,3 @@ export default function Seo({
     </Head>
   )
 }
-
-// ·

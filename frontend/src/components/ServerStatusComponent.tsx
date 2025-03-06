@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
-import { EuiEmptyPrompt } from '@elastic/eui'
-import Api from '../utils/api'
+import { EuiEmptyPrompt } from '@elastic/eui';
+import { useEffect, useState } from 'react';
+
+import Api from '../utils/api';
 
 
 const minute = 60 * 1000
@@ -12,7 +13,7 @@ const ServerStatusComponent = () => {
     useEffect(() => {
         const checkApiStatus = async () => {
             try {
-                const response = await Api.isApiRunning() // Assuming Api.isApiRunning() returns a promise
+                const response = await Api.getApi() // Assuming Api.getApi() returns a promise
                 if (response.status !== 200) {
                     setIsDown(true)
                 } else {

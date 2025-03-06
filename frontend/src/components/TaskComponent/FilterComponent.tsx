@@ -1,11 +1,12 @@
-import { EuiButton, EuiFormRow } from '@elastic/eui'
-import { useCallback, useState } from 'react'
-import CheckboxField from '../inputs/CheckBoxField'
-import MultiSelect from '../inputs/MultiSelect'
-import NumberField from '../inputs/NumberField'
-import SearchField from '../inputs/SearchField'
-import SingleSelect from '../inputs/SingleSelect'
+import { EuiButton, EuiFormRow } from '@elastic/eui';
 import debounce from 'lodash.debounce';
+import { useCallback, useState } from 'react';
+
+import CheckboxField from '../inputs/CheckBoxField';
+import MultiSelect from '../inputs/MultiSelect';
+import NumberField from '../inputs/NumberField';
+import SearchField from '../inputs/SearchField';
+import SingleSelect from '../inputs/SingleSelect';
 
 const NumericInputWithLabel = ({ label, initialValue, onChange }) => {
   const [value, setValue] = useState(initialValue);
@@ -130,7 +131,7 @@ export const FilterComponent = ({
                 <NumericInputWithLabel
                   key={id}
                   label={label}
-                  value={filter_data[id]}
+                  initialValue={filter_data[id]}
                   onChange={v => handleFilterChange(id, v)}
                 />
               )
@@ -176,7 +177,7 @@ export const FilterComponent = ({
                 <TextFieldWithLabel
                   key={id}
                   label={label}
-                  value={filter_data[id]}
+                  initialValue={filter_data[id]}
                   onChange={v => handleFilterChange(id, v)}
                 />
               )

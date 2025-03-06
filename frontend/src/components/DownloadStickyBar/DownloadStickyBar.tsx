@@ -1,18 +1,20 @@
 import {
   EuiButton,
+  EuiForm,
+  EuiFormRow,
   EuiIcon,
   EuiModal,
   EuiModalBody,
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiToolTip,
-} from '@elastic/eui'
-import { useState } from 'react'
-import ClickOutside from '../ClickOutside/ClickOutside'
-import Tabs from '../Tabs/Tabs'
+} from '@elastic/eui';
+import { useState } from 'react';
 
-import { EuiForm, EuiFormRow } from '@elastic/eui'
-import CheckboxField from '../inputs/CheckBoxField'
+import ClickOutside from '../ClickOutside/ClickOutside';
+import CheckboxField from '../inputs/CheckBoxField';
+import Tabs from '../Tabs/Tabs';
+
 function getprefs() {
   if (typeof window === 'undefined') {
     return { format: 'csv', convert_to_english: true }
@@ -124,21 +126,21 @@ function useDownloadModal(onDownload) {
   }
 
   const modal = isModalVisible && (
-    <EuiModal className="max-w-xl text-center" onClose={toggleModal}>
-      <ClickOutside
+    <ClickOutside
+    exceptions={['euiModal']} 
         handleClickOutside={() => {
           toggleModal()
-        }}>
-        <div>
+        }}><EuiModal className="max-w-xl text-center" onClose={toggleModal}>
+      
           <EuiModalHeader className="justify-center">
             <EuiModalHeaderTitle>Download Results</EuiModalHeaderTitle>
           </EuiModalHeader>
           <EuiModalBody>
             <DownloadForm onSubmit={successClose} />
           </EuiModalBody>
-        </div>
-      </ClickOutside>
     </EuiModal>
+    </ClickOutside>
+
   )
 
   return { showModal: () => setIsModalVisible(true), modal }

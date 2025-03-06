@@ -12,38 +12,26 @@ import {
   EuiModalHeaderTitle,
   EuiText,
   formatDate,
-} from '@elastic/eui'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import Api from '../../utils/api'
-import { TaskStatus, filterAndMapAllTasks, filterIsPendingTasks, filterIsProgressTasks, } from '../../utils/models'
-import { EmptyOutputs, EmptyScraper } from '../Empty/Empty'
-import Toast from '../../utils/cogo-toast'
-import ClickOutside from '../ClickOutside/ClickOutside'
-import { isEmpty } from '../../utils/missc'
-import CenteredSpinner from '../CenteredSpinner'
-import Description from '../../components/Description/Description'
-import Tabs, { TabsId } from '../../components/PagesTabs/PagesTabs'
-import {
-  OutputContainer,
-  OutputTabsContainer,
-  TabWrapper,
-} from '../../components/Wrappers'
-import ServerStatusComponent from '../../components/ServerStatusComponent'
-import { Pagination } from '../Pagination'
+} from '@elastic/eui';
+import { useEffect, useState } from 'react';
+
+import Description from '../../components/Description/Description';
+import Tabs, { TabsId } from '../../components/PagesTabs/PagesTabs';
+import ServerStatusComponent from '../../components/ServerStatusComponent';
+import { OutputContainer, OutputTabsContainer, TabWrapper } from '../../components/Wrappers';
+import Api from '../../utils/api';
+import Toast from '../../utils/cogo-toast';
+import { isEmpty } from '../../utils/missc';
+import { filterAndMapAllTasks, filterIsPendingTasks, filterIsProgressTasks, TaskStatus } from '../../utils/models';
+import CenteredSpinner from '../CenteredSpinner';
+import ClickOutside from '../ClickOutside/ClickOutside';
+import { EmptyOutputs, EmptyScraper } from '../Empty/Empty';
+import { Link } from '../Link';
+import { Pagination } from '../Pagination';
 
 function convertLocalDateToUTCDate(date, toUTC) {
   // auto converts so no need
   return new Date(date+"Z")
-  const localOffset = date.getTimezoneOffset() * 60000
-  const localTime = date.getTime()
-  if (toUTC) {
-    date = localTime + localOffset
-  } else {
-    date = localTime - localOffset
-  }
-  date = new Date(date)
-  return date
 }
 
 const toTitleCase = str => {
@@ -271,9 +259,10 @@ const TaskTable = ({ activePage, onPageClick, isLoading, total_pages, tasks, upd
   return (
     <>
       {taskToBeDeleted && (
+          <ClickOutside
+          exceptions={['euiModal']} 
+          handleClickOutside={() => { closeModal() }}>
         <EuiModal onClose={closeModal}>
-          <ClickOutside handleClickOutside={() => { closeModal() }}>
-            <div>
 
               <EuiModalHeader>
                 <EuiModalHeaderTitle>Confirm Delete</EuiModalHeaderTitle>
@@ -291,9 +280,9 @@ const TaskTable = ({ activePage, onPageClick, isLoading, total_pages, tasks, upd
                 </EuiButton>
               </EuiModalFooter>
 
-            </div>
-          </ClickOutside>
+
         </EuiModal>
+        </ClickOutside>
       )}
       {isLoading ? (
         <CenteredSpinner />
@@ -336,9 +325,9 @@ const OutputComponent = (props) => {
       const intervalId = setInterval(async () => {
         if (!isCleared.isCleared) { // Access the isCleared property
           const all_tasks = filterAndMapAllTasks(pendingTsks.concat(progressTsks))
-          const response = await Api.isAnyTaskFinished(pendingTsks.map(task => task.id), progressTsks.map(task => task.id), all_tasks)
+          const response = await Api.isAnyTaskUpdated(pendingTsks.map(task => task.id), progressTsks.map(task => task.id), all_tasks)
           if (response.data.result && !isCleared.isCleared) {
-            const { data } = await Api.getTasks(active_page)
+            const { data } = await Api.getTasksForUiDisplay(active_page)
             if (!isCleared.isCleared) { // Access the isCleared property
               setState((x) => ({ ...data, active_page: x.active_page > data.total_pages ? 1 : x.active_page }))
             }
@@ -365,7 +354,7 @@ const OutputComponent = (props) => {
   const onPageChange = x => {
     async function fetchData() {
       setLoading(true)
-      const data = (await Api.getTasks(x)).data
+      const data = (await Api.getTasksForUiDisplay(x)).data
       updateState(data, x)
       setLoading(false)
 

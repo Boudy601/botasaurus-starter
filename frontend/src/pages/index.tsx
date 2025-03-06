@@ -1,16 +1,13 @@
-import { GetServerSideProps } from 'next/types'
-import { wrapAxiosErrors } from '../components/AxiosErrorHoc'
+import AuthedDashboard from '../components/AuthedDashboard'
 import Description from '../components/Description/Description'
 import InputComponent from '../components/InputComponent/InputComponent'
 import Tabs, { TabsId } from '../components/PagesTabs/PagesTabs'
 import Seo from '../components/Seo'
 import { Container, TabWrapper } from '../components/Wrappers'
-import AuthedDashboard from '../layouts/AuthedDashboard'
-import Api from '../utils/api'
 import { create_title } from '../utils/common'
+import { homeServerSideProps } from '../utils/props'
 
 // Create a Container Component adds padding
-
 const Page = ({ ...props }: any) => {
   return (
     <>
@@ -23,15 +20,10 @@ const Page = ({ ...props }: any) => {
             <InputComponent {...props} />
           </TabWrapper>
         </Container>
-      </AuthedDashboard>
-    </>
+      </AuthedDashboard>    </>
   )
 }
-export const getServerSideProps: GetServerSideProps = wrapAxiosErrors(async ({}) => {
-  const config = await Api.getConfig()
-  return {
-    props: config,
-  }
-})
+export const getServerSideProps = homeServerSideProps
 
 export default Page
+

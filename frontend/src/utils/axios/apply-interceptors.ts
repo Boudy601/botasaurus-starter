@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { AxiosInstance } from 'axios'
-import cogoToast from 'cogo-toast-react-17-fix'
-import Toast from '../cogo-toast'
+import { AxiosInstance } from 'axios';
+import cogoToast from 'cogo-toast-react-17-fix';
+import Router from 'next/router';
 
-import Router from 'next/router'
+import Toast from '../cogo-toast';
 
 function applyInterceptors(AxiosInstance: AxiosInstance) {
   const map = new Map()
@@ -56,7 +56,8 @@ function applyInterceptors(AxiosInstance: AxiosInstance) {
       if (config.silent) {
         return config
       }
-      showLoading(config, config.message ? config.message : 'Submitting')
+      const message = config.message
+      showLoading(config, message ? message : 'Submitting')
 
       return config
     },

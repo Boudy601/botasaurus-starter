@@ -1,29 +1,19 @@
-import { EuiLink } from '@elastic/eui'
-import { useEffect, useRef, useState } from 'react'
-import Api from '../../utils/api'
-import { isEmpty, isEmptyObject } from '../../utils/missc'
-import { TaskStatus, hasFilters, isDoing, hasSorts, hasViews } from '../../utils/models'
-import CenteredSpinner from '../CenteredSpinner'
-import DownloadStickyBar from '../DownloadStickyBar/DownloadStickyBar'
-import {
-  EmptyAborted,
-  EmptyFailed,
-  EmptyFilterResults,
-  EmptyInProgress,
-  EmptyPending,
-  EmptyResults,
-} from '../Empty/Empty'
-import {
-  Container,
-  OutputContainerWithBottomPadding,
-  OutputTabsContainer,
-} from '../Wrappers'
-import DataPanel from './DataPanel'
-import { FilterComponent } from './FilterComponent'
-import { SortComponent } from './SortComponent'
-import { ViewComponent } from './ViewComponent'
-import Link from 'next/link'
-import { Pagination } from '../Pagination'
+import { EuiLink } from '@elastic/eui';
+import { useEffect, useRef, useState } from 'react';
+
+import Api from '../../utils/api';
+import { isEmpty, isEmptyObject } from '../../utils/missc';
+import { hasFilters, hasSorts, hasViews, isDoing, TaskStatus } from '../../utils/models';
+import CenteredSpinner from '../CenteredSpinner';
+import DownloadStickyBar from '../DownloadStickyBar/DownloadStickyBar';
+import { EmptyAborted, EmptyFailed, EmptyFilterResults, EmptyInProgress, EmptyPending, EmptyResults } from '../Empty/Empty';
+import { Link } from '../Link';
+import { Pagination } from '../Pagination';
+import { Container, OutputContainerWithBottomPadding, OutputTabsContainer } from '../Wrappers';
+import DataPanel from './DataPanel';
+import { FilterComponent } from './FilterComponent';
+import { SortComponent } from './SortComponent';
+import { ViewComponent } from './ViewComponent';
 
 function sentenceCase(string) {
   // Convert a string into Sentence case.
@@ -180,7 +170,7 @@ const TaskComponent = ({
           page: pageAndView.currentPage + 1,
           per_page: per_page_records,
         };
-        const { data } = await Api.getTaskResults(taskId, params, false, signal);
+        const { data } = await Api.getUiTaskResults(taskId, params, false, signal);
         setResponse(data);
       } catch (error) {
         if (error.message === 'canceled'){
@@ -217,7 +207,7 @@ const TaskComponent = ({
               page: pageAndView.currentPage + 1,
               per_page: per_page_records,
             }
-            const { data } = await Api.getTaskResults(taskId, params)
+            const { data } = await Api.getUiTaskResults(taskId, params)
             if ((pageAndView.currentPage + 1) > data.total_pages) {
               setPageAndView((x) => ({ ...x, currentPage: 0 }))
             }
